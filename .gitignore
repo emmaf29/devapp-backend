@@ -1,0 +1,8 @@
+# Os generated files#
+.DS_Store
+Thumbs.db
+.tmp/
+
+
+#packageManagger specific look files
+package

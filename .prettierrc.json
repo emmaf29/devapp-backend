@@ -1,0 +1,11 @@
+{
+    "prinWidth" : 120,
+    "tabWidth" : 4,
+    "useTabs" :false,
+    "semi": true,
+    "endOfLine" : "lf",
+    "singleQuote" : true,
+    "trailingComma" : "none"
+
+
+}
