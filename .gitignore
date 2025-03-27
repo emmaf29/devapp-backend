@@ -1,8 +1,10 @@
-# Os generated files#
 .DS_Store
 Thumbs.db
 .tmp/
 
+package-lock.json
+node_modules/
 
-#packageManagger specific look files
-package
+tsconfig.build.json
+
+dist/
