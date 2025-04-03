@@ -7,6 +7,8 @@ import process from 'process';
 import Persona from './Modelo/Persona';
 import Auto from './Modelo/Auto';
 import { listaPersonas } from './Modelo/Datos';
+import { Request, Response } from 'express';
+
 
 // Creamos nuestra app express
 const app = express();
@@ -21,31 +23,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(helmet());
 
+
 // Mis endpoints van acá
-
-
-/*const Ferrari: Auto = {
-    año: 2003,
-    color: 'blanco',
-    marca: 'ferrari',
-    modelo: 'qsy',
-    motor: 'V7',
-    patente: 'ABC123',
-    numeroDeChasis: '123456'
-};
-const listaPersonas: Persona[] = [
-    {
-        id: 1,
-        nombre: 'ana',
-        apellido: 'diaz',
-        dni: '23564897',
-        fechaDeNacimiento: new Date(1997, 6, 7),
-        genero: 'FEMENINO',
-        autos: [Ferrari],
-       // esDonante: true, //ver
-    },
-
-];*/
 
 app.post('/login',(req, res)=> {
     console.log(req);
@@ -58,6 +37,7 @@ app.post('/login',(req, res)=> {
 // OBTENER PERSONAS
 app.get('/personas', (req, res) => {
     const personas= listaPersonas.map(p => ({
+        id : p.id,
         dni: p.dni,
         nombre: p.nombre,
         apellido: p.apellido
@@ -75,35 +55,38 @@ app.get('/autos', (req, res) => {
     );
 
     const autosParciales = autosList.map(a => ({
+        idDuenio: a.idDuenio,
         marca: a.marca,
         modelo: a.modelo,
-        año: a.año,
+        año: a.anio,
         patente: a.patente
     }));
 
     res.status(200).json(autosParciales);
+
 });
 
 
 
 //Read
 
-//OBTENER AUTOS POR ID
-app.get('/auto/:patente', (req,res)=>{
+//OBTENER AUTOS POR PATENTE
+/*app.get('/auto/:patente', (req,res) => {
     const patenteBuscar = req.params.patente;
     const auto = listaPersonas.flatMap(persona =>persona.autos)
                               .find(a=>a.patente === patenteBuscar);
     if(!auto){
-        res.status(404).json({ error: "Auto no encontrado" });
+      res.status(404).json({ error: "Auto no encontrado" });
+      return;
     }
     res.status(200).json(auto);
 
 })
 
+*/
 
 
-
-//OBTENER PERSONAS POR ID
+//OBTENER PERSONAS POR ID CON SU AUTO
 
 app.get('/persona/:id', (req, res) => {
     const idPersona = Number(req.params.id);
@@ -111,10 +94,83 @@ app.get('/persona/:id', (req, res) => {
 
     if (!persona) {
       res.status(404).json({error: "persona no encontrada"});
+      return;
     }
 
     res.json(persona);
 });
+
+
+//edit
+
+
+
+
+//-----------------------------------------------------------------------------------------//
+
+
+//add agrega una persona y devuelve su id nuevo
+app.post('/personaNueva', (req, res)=>{
+    const {nombre,apellido,dni,fechaDeNacimiento,genero,esDonante} = req.body;
+
+    if(!nombre ||!apellido || !dni || !fechaDeNacimiento || !genero){
+     res.status(400).json({error: "datos invalidos"});
+     return;
+    }
+
+   const nuevaPersona: Persona = {
+    id:listaPersonas.length +1,
+    nombre,
+    apellido,
+    dni,
+    fechaDeNacimiento: new Date (fechaDeNacimiento),
+    genero,
+    autos:[],
+    esDonante
+   };
+
+   listaPersonas.push(nuevaPersona);
+   res.status(200).json({id:nuevaPersona.id});
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Delete
+app.delete('/persona/:id', (req, res) =>{
+    const idPersona = Number(req.params.id);
+    const index = listaPersonas.findIndex((p) => p.id === idPersona);
+
+    if(index === -1){
+        res.status(404).json({error : "persona no encontrada"});
+        return;
+    }
+   listaPersonas.splice(index,1);
+   res.status(201).send();
+
+});
+
+
+
 
 
 

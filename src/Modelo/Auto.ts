@@ -1,7 +1,8 @@
 interface Auto {
+    idDuenio: number;
     marca: string;
     modelo: string;
-    año: number;
+    anio: number;
     patente: string;
     color: string;
     numeroDeChasis: string;
