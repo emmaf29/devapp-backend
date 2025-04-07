@@ -31,7 +31,7 @@ const validarPersona = (p: Persona) => {
 
   return null;
 };
-
+// no anda , ver
 const agregar = (persona: Persona): number | string => {
   const error = validarPersona(persona);
   if (error)
@@ -39,11 +39,32 @@ const agregar = (persona: Persona): number | string => {
 
   const idAsignado = ListaPersonas.create(persona);
   return idAsignado;
-};// no anda , ver
+};
+
+//delete
+const deleteP = (id : number) : boolean => {
+  const index = listaPersonas.findIndex(p => p.id === id);
+  if (index === -1){
+      return false;
+  }
+  listaPersonas.splice(index,1);
+  return true;
+};
+/*
+// alternativa del delete con filter que anda
+export const deleteP = (id: number): boolean  => {
+  const persona = listaPersonas.find(p => p.id === id);
+  if (!persona)
+  return false;
+
+  ListaPersonas.borrar(id);
+  return true;
+};
+*/
+
+export default {listarP, buscarid,agregar, deleteP};
 
 
-
-export default {listarP, buscarid,agregar};
 
 
 

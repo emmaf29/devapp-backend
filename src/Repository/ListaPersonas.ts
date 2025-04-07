@@ -3,7 +3,6 @@ import Auto from "../Modelo/Auto";
 import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from "../Repository/ListaAutos";
 
 
-
 let Personas : Persona[] = [];
 
 //browse
@@ -11,7 +10,7 @@ const listarP = (): Persona[] => {
 return Personas;
 };
 
-
+//add
 const existeDni = (dni: string): boolean => {
   return listaPersonas.some(p => p.dni === dni);
 };
@@ -23,8 +22,15 @@ const create = (persona: Persona): number => {
   return persona.id;
 };
 
+//delete
+const borrar = (id: number) => {
+    Personas = Personas.filter((p: Persona) => p.id !== id);
+    return;
+};
 
-export default {listarP,create,existeDni};
+
+export default {listarP,create,existeDni,borrar};
+
 
 
 

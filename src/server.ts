@@ -7,7 +7,7 @@ import process from 'process';
 import Persona from './Modelo/Persona';
 import Auto from './Modelo/Auto';
 import { Request, Response } from 'express';
-import { listarP, buscarid, agregar } from './Controller/PersonaController';
+import { listarP, buscarid, agregar, deleteP } from './Controller/PersonaController';
 import {listarA} from './Controller/AutoController';
 
 
@@ -43,6 +43,7 @@ app.post('/login',(req, res)=> {
 app.get('/persona', listarP);
 app.get('/personas/:id', buscarid);
 app.post('/peronas', agregar);
+app.delete('/persona/:id',deleteP);
 
 
 //autos
