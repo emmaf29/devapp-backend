@@ -1,6 +1,8 @@
 import ListaPersonas, { listaPersonas } from "../Repository/ListaPersonas";
 import Persona from "../Modelo/Persona";
 
+//let ID = 1;
+
 //browse
 const listarP = () => {
     return listaPersonas.map(p => ({
@@ -16,30 +18,50 @@ const listarP = () => {
   return listaPersonas.find(p => p.id === id);
 };
 
+
 //add
-const validarPersona = (p: Persona) => {
-  if (
-    !p.nombre || !p.apellido || !p.dni || !p.fechaDeNacimiento || !p.genero ||
-    typeof p.esDonante !== 'boolean'
-  ) {
-    return 'Faltan datos obligatorios o son inválidos';
-  }
+const addP = (Persona : Persona): number | null => {
+    const {nombre,apellido,id,dni,fechaDeNacimiento,genero,autos,esDonante} = Persona;
 
-  if (ListaPersonas.existeDni(p.dni)) {
-    return `La persona con DNI ${p.dni} ya existe`;
-  }
-
+ if (typeof nombre !== 'string' ||typeof apellido !== 'string' ||
+ typeof dni !== 'string' ||typeof fechaDeNacimiento !== 'string' ||
+ typeof genero !== 'string' ||!Array.isArray(autos) ||typeof esDonante !== 'boolean') {
   return null;
-};
-// no anda , ver
-const agregar = (persona: Persona): number | string => {
-  const error = validarPersona(persona);
-  if (error)
-  return error;
+}
 
-  const idAsignado = ListaPersonas.create(persona);
-  return idAsignado;
+ const nuevaPersona: Persona = {
+  id: listaPersonas.length +1,
+  nombre,
+  apellido,
+  dni,
+  fechaDeNacimiento: new Date(fechaDeNacimiento),
+  genero,
+  autos,
+  esDonante
 };
+
+listaPersonas.push(nuevaPersona);
+return nuevaPersona.id;
+}
+
+// edit
+
+export const editP= (id: number, cambios: Partial<Persona>): boolean => {
+  const persona = listaPersonas.find(p => p.id === id);
+  if (!persona)
+  return false;
+
+    persona.nombre = cambios.nombre ?? persona.nombre;
+    persona.apellido = cambios.apellido ?? persona.apellido;
+    persona.dni = cambios.dni ?? persona.dni;
+    persona.fechaDeNacimiento = cambios.fechaDeNacimiento? new Date(cambios.fechaDeNacimiento): persona.fechaDeNacimiento;
+    persona.genero = cambios.genero ?? persona.genero;
+    persona.autos = cambios.autos ?? persona.autos;
+    persona.esDonante = cambios.esDonante ?? persona.esDonante;
+
+return true;
+};
+
 
 //delete
 const deleteP = (id : number) : boolean => {
@@ -62,11 +84,5 @@ export const deleteP = (id: number): boolean  => {
 };
 */
 
-export default {listarP, buscarid,agregar, deleteP};
-
-
-
-
-
-
+export default {listarP, buscarid,addP,editP,deleteP};
 

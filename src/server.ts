@@ -7,7 +7,7 @@ import process from 'process';
 import Persona from './Modelo/Persona';
 import Auto from './Modelo/Auto';
 import { Request, Response } from 'express';
-import { listarP, buscarid, agregar, deleteP } from './Controller/PersonaController';
+import { listarP, buscarid, addP, edit, deleteP } from './Controller/PersonaController';
 import {listarA} from './Controller/AutoController';
 
 
@@ -42,7 +42,8 @@ app.post('/login',(req, res)=> {
 //app.use('/', personaRuta);
 app.get('/persona', listarP);
 app.get('/personas/:id', buscarid);
-app.post('/peronas', agregar);
+app.post('/persona', addP);
+app.put('/persona/:id', edit);
 app.delete('/persona/:id',deleteP);
 
 
