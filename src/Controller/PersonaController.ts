@@ -16,8 +16,7 @@ export const listarP = (req: Request, res: Response) => {
      res.status(404).json({ error: 'persona no encontrada' });
      return;
   }
-
-    res.status(200).json(persona);
+  res.status(200).json(persona);
 };
 
 // add
@@ -28,7 +27,6 @@ export const addP = (req: Request, res: Response) => {
     res.status(400).json({ error: 'Datos inválidos' });
     return;
   }
-
   res.status(200).json({ id: agregado });
 };
 
@@ -43,7 +41,6 @@ export const addP = (req: Request, res: Response) => {
    res.status(404).json({ error: 'ID no encontrado' });
    return;
   }
-
   res.status(201).json({ mensaje: 'Persona actualizada correctamente' });
 };
 

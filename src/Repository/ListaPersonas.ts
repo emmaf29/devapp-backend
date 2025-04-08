@@ -10,17 +10,6 @@ const listarP = (): Persona[] => {
 return Personas;
 };
 
-//add
-const existeDni = (dni: string): boolean => {
-  return listaPersonas.some(p => p.dni === dni);
-};
-/*/
-const create = (persona: Persona): number => {
-  persona.id = listaPersonas.length +1;
-  persona.autos = [];
-  listaPersonas.push(persona);
-  return persona.id;
-};*/
 
 //delete
 const borrar = (id: number) => {
@@ -29,7 +18,7 @@ const borrar = (id: number) => {
 };
 
 
-export default {listarP,/*create*/existeDni,borrar};
+export default {listarP,borrar};
 
 
 

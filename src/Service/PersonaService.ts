@@ -6,6 +6,7 @@ import Persona from "../Modelo/Persona";
 //browse
 const listarP = () => {
     return listaPersonas.map(p => ({
+      id : p.id,
       dni: p.dni,
       nombre: p.nombre,
       apellido: p.apellido

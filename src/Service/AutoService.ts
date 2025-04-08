@@ -15,6 +15,7 @@ const listarA = (id?: number) => {
     }
 
     return autos.map(a => ({
+      id : a.idDuenio,
       marca: a.marca,
       modelo: a.modelo,
       año: a.anio,
