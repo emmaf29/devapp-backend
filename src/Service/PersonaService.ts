@@ -24,10 +24,14 @@ const listarP = () => {
 const addP = (Persona : Persona): number | null => {
     const {nombre,apellido,id,dni,fechaDeNacimiento,genero,autos,esDonante} = Persona;
 
- if (typeof nombre !== 'string' ||typeof apellido !== 'string' ||
- typeof dni !== 'string' ||typeof fechaDeNacimiento !== 'string' ||
- typeof genero !== 'string' ||!Array.isArray(autos) ||typeof esDonante !== 'boolean') {
-  return null;
+ if (typeof nombre !== 'string' ||
+typeof apellido !== 'string' ||
+typeof dni !== 'string' ||
+typeof fechaDeNacimiento !== 'string' ||
+typeof genero !== 'string' ||
+!Array.isArray(autos) ||
+typeof esDonante !== 'boolean') {
+return null;
 }
 
  const nuevaPersona: Persona = {
@@ -51,6 +55,19 @@ export const editP= (id: number, cambios: Partial<Persona>): boolean => {
   const persona = listaPersonas.find(p => p.id === id);
   if (!persona)
   return false;
+
+
+  const { nombre, apellido, dni, fechaDeNacimiento, genero, autos, esDonante } = cambios;
+
+  if ((nombre !== undefined && typeof nombre !== 'string') ||
+      (apellido !== undefined && typeof apellido !== 'string') ||
+      (dni !== undefined && typeof dni !== 'string') ||
+      (fechaDeNacimiento !== undefined && typeof fechaDeNacimiento !== 'string') ||
+      (genero !== undefined && typeof genero !== 'string') ||
+      (autos !== undefined && !Array.isArray(autos)) ||
+      (esDonante !== undefined && typeof esDonante !== 'boolean')) {
+    return false;
+  }
 
     persona.nombre = cambios.nombre ?? persona.nombre;
     persona.apellido = cambios.apellido ?? persona.apellido;

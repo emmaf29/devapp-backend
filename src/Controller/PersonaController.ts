@@ -23,7 +23,7 @@ export const listarP = (req: Request, res: Response) => {
 export const addP = (req: Request, res: Response) => {
   const agregado = personaService.addP(req.body);
 
-  if (agregado === null) {
+  if (!agregado) {
     res.status(400).json({ error: 'Datos inválidos' });
     return;
   }
@@ -38,7 +38,7 @@ export const addP = (req: Request, res: Response) => {
   const editado = editP(id, cambios);
 
   if (!editado) {
-   res.status(404).json({ error: 'ID no encontrado' });
+   res.status(404).json({ error: 'datos inválidos' });
    return;
   }
   res.status(201).json({ mensaje: 'Persona actualizada correctamente' });

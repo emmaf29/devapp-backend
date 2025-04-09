@@ -1,10 +1,12 @@
-/*import { Router } from 'express';
-import { listarP, buscarid, agregar } from '../Controller/PersonaController';
+import { Router } from 'express';
+import { listarP, buscarid, addP, edit, deleteP } from '../Controller/PersonaController';
 
 const router = Router();
 
-router.get('/personas', listarP);
+router.get('/persona', listarP);
 router.get('/personas/:id', buscarid);
-router.post('/persona', agregar);
+router.post('/persona', addP);
+router.put('/persona/:id', edit);
+router.delete('/persona/:id',deleteP);
 
-export default router;*/
+export default router;

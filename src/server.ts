@@ -8,10 +8,10 @@ import Persona from './Modelo/Persona';
 import Auto from './Modelo/Auto';
 import { Request, Response } from 'express';
 import { listarP, buscarid, addP, edit, deleteP } from './Controller/PersonaController';
-import {listarA} from './Controller/AutoController';
+import {listarA, buscarA, addAuto, editAuto, deleteA} from './Controller/AutoController';
 
 
-//import personaRuta from './Rutas/PersonaRuta';
+import personaRuta from './Rutas/PersonaRuta';
 //import autoRuta from './Rutas/AutoRuta';
 
 
@@ -38,19 +38,22 @@ app.post('/login',(req, res)=> {
     res.json('funciona el login :)');
 })
 
-//perosna
-//app.use('/', personaRuta);
-app.get('/persona', listarP);
+//perosnas
+app.use('/', personaRuta);
+/*app.get('/persona', listarP);
 app.get('/personas/:id', buscarid);
 app.post('/persona', addP);
 app.put('/persona/:id', edit);
-app.delete('/persona/:id',deleteP);
+app.delete('/persona/:id',deleteP);*/
 
 
 //autos
 //app.use('/', autoRuta);
 app.get('/autos', listarA);
-
+app.get('/autos/:id',buscarA);
+app.post('/auto', addAuto);
+app.put('/auto/:idDuenio/:patente', editAuto);
+app.delete('/autos/:id/:patente', deleteA);
 
 
 app.get('/', (req, res) => {
