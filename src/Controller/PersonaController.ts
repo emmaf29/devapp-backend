@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import personaService, { editP } from '../Service/PersonaService';
+import personaService, { editP } from '../service/personaService';
 
 //browse
 export const listarP = (req: Request, res: Response) => {

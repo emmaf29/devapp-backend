@@ -1,5 +1,5 @@
-import ListaPersonas, { listaPersonas } from "../Repository/ListaPersonas";
-import Persona from "../Modelo/Persona";
+import ListaPersonas, { listaPersonas } from "../repository/listaPersonas";
+import Persona from "../modelo/persona";
 
 //let ID = 1;
 
@@ -23,7 +23,7 @@ const listarP = () => {
 //add
 const addP = (Persona : Persona): number | null => {
     const {nombre,apellido,id,dni,fechaDeNacimiento,genero,autos,esDonante} = Persona;
-
+ // campos obligatorios
  if (typeof nombre !== 'string' ||
 typeof apellido !== 'string' ||
 typeof dni !== 'string' ||
@@ -58,7 +58,7 @@ export const editP= (id: number, cambios: Partial<Persona>): boolean => {
 
 
   const { nombre, apellido, dni, fechaDeNacimiento, genero, autos, esDonante } = cambios;
-
+// campos opcionales
   if ((nombre !== undefined && typeof nombre !== 'string') ||
       (apellido !== undefined && typeof apellido !== 'string') ||
       (dni !== undefined && typeof dni !== 'string') ||

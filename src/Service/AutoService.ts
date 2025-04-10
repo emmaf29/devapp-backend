@@ -1,5 +1,5 @@
-import Auto from "../Modelo/Auto";
-import ListaPersonas, { listaPersonas } from "../Repository/ListaPersonas";
+import Auto from "../modelo/auto";
+import ListaPersonas, { listaPersonas } from "../repository/listaPersonas";
 
 //browse
 const listarA = (id?: number) => {
@@ -15,7 +15,7 @@ const listarA = (id?: number) => {
     }
 
     return autos.map(a => ({
-      id : a.idDuenio,
+      id : a.id,
       marca: a.marca,
       modelo: a.modelo,
       año: a.anio,
@@ -24,14 +24,14 @@ const listarA = (id?: number) => {
   };
 
 //read
-const buscarIdDuenio = (idDuenio: number): Auto[] => {
-const persona = listaPersonas.find(a=> a.id === idDuenio);
+const buscarIdDuenio = (id: number): Auto[] => {
+const persona = listaPersonas.find(a=> a.id === id);
 if(!persona) return [];
 return persona.autos;
 };
 
 //add
-const agregarA = (idDuenio: number, auto: Auto): Auto | null => {
+const agregarA = (id: number, auto: Auto): Auto | null => {
   const {marca,modelo,anio, patente,color, numeroDeChasis,motor} = auto;
 
   if (typeof marca !== 'string' ||
@@ -45,7 +45,7 @@ const agregarA = (idDuenio: number, auto: Auto): Auto | null => {
     return null;
   }
 
-  const persona = listaPersonas.find(p => p.id === idDuenio);
+  const persona = listaPersonas.find(p => p.id === id);
   if (!persona)
   return null;
 
@@ -54,7 +54,7 @@ const agregarA = (idDuenio: number, auto: Auto): Auto | null => {
   return null;
 
   const nuevoAuto: Auto = {
-    idDuenio,
+    id,
     marca,
     modelo,
     anio,
@@ -68,48 +68,48 @@ const agregarA = (idDuenio: number, auto: Auto): Auto | null => {
   return nuevoAuto;
 };
 
-//edit
-const editA = (idDuenio: number, patente: string, cambios: Partial<Auto>): boolean => {
-  const persona = listaPersonas.find(p => p.id === idDuenio);
+const editA = (id: number, cambios: Partial<Auto>): boolean => {
+  const persona = listaPersonas.find(p =>p.autos.some(a => a.id === id)
+  );
   if (!persona) return false;
 
-  const auto = persona.autos.find(a => a.patente === patente);
+  const auto = persona.autos.find(a => a.id === id);
   if (!auto) return false;
 
-
-  const { marca, modelo, anio, color, numeroDeChasis, motor } = cambios;
+  const { marca, modelo, anio, patente, color, numeroDeChasis, motor } = cambios;
 
   if ((marca !== undefined && typeof marca !== 'string') ||
       (modelo !== undefined && typeof modelo !== 'string') ||
       (anio !== undefined && typeof anio !== 'number') ||
+      (patente !== undefined && typeof patente !== 'string') ||
       (color !== undefined && typeof color !== 'string') ||
       (numeroDeChasis !== undefined && typeof numeroDeChasis !== 'string') ||
       (motor !== undefined && typeof motor !== 'string')) {
     return false;
   }
 
-
-  auto.marca = cambios.marca ?? auto.marca;
-  auto.modelo = cambios.modelo ?? auto.modelo;
-  auto.anio = cambios.anio ?? auto.anio;
-  auto.color = cambios.color ?? auto.color;
-  auto.numeroDeChasis = cambios.numeroDeChasis ?? auto.numeroDeChasis;
-  auto.motor = cambios.motor ?? auto.motor;
+  auto.marca = marca ?? auto.marca;
+  auto.modelo = modelo ?? auto.modelo;
+  auto.anio = anio ?? auto.anio;
+  auto.patente = patente ?? auto.patente;
+  auto.color = color ?? auto.color;
+  auto.numeroDeChasis = numeroDeChasis ?? auto.numeroDeChasis;
+  auto.motor = motor ?? auto.motor;
 
   return true;
 };
 
 //delete
-const deleteA = (idDuenio: number, patente: string): boolean => {
-  const persona = listaPersonas.find(p => p.id === idDuenio);
-  if (!persona) return false;
 
-  const index = persona.autos.findIndex(a => a.patente === patente);
-  if (index === -1) return false;
-
-  persona.autos.splice(index, 1);
-  return true;
+const deleteA = (id: number): boolean => {
+  for (const persona of listaPersonas) {
+    const index = persona.autos.findIndex(a => a.id === id);
+    if (index !== -1) {
+      persona.autos.splice(index, 1);
+      return true;
+    }
+  }
+  return false;
 };
-
 
 export default { listarA, buscarIdDuenio, agregarA, editA, deleteA};

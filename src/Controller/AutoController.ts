@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import AutoService from '../Service/AutoService';
+import autoService from '../service/autoService';
 
 //browse
 export const listarA = (req: Request, res: Response) => {
    const id = req.query.id? Number(req.query.id) : undefined;
-   const autos = AutoService.listarA(id);
+   const autos = autoService.listarA(id);
    res.status(200).json(autos);
 };
 
@@ -12,7 +12,7 @@ export const listarA = (req: Request, res: Response) => {
 
 export const buscarA = (req: Request, res: Response) => {
    const id = Number(req.params.id);
-   const auto = AutoService.buscarIdDuenio(id);
+   const auto = autoService.buscarIdDuenio(id);
 
    if (!auto) {
       res.status(404).json({ error: 'Auto no encontrado' });
@@ -23,7 +23,7 @@ export const buscarA = (req: Request, res: Response) => {
 
 //add
 export const addAuto = (req: Request, res: Response) => {
-   const agregado = AutoService.agregarA(req.body.idDuenio, req.body);
+   const agregado = autoService.agregarA(req.body.idDuenio, req.body);
 
    if (!agregado) {
      res.status(400).json({ error: 'Datos inválidos o patente duplicada' });
@@ -34,31 +34,31 @@ export const addAuto = (req: Request, res: Response) => {
  };
 
 // edit
-export const editAuto = (req: Request, res: Response) => {
-   const idDuenio = Number(req.params.idDuenio);
-   const patente = req.params.patente;
-   const cambios = req.body;
+export const editA = (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const cambios = req.body;
 
-   const editado = AutoService.editA(idDuenio, patente, cambios);
+  const editado = autoService.editA(id, cambios);
 
-   if (!editado) {
-     res.status(404).json({ error: 'datos invalidos' });
-     return;
-   }
-   res.status(200).json({ mensaje: 'Auto actualizado correctamente' });
- };
+  if (!editado) {
+    res.status(404).json({ error: 'datos inválidos o auto no encontrado' });
+    return;
+  }
+
+  res.status(201).json({ mensaje: 'Auto actualizado correctamente' });
+};
 
 
  //delete
  export const deleteA = (req: Request, res: Response) => {
-   const idDuenio = Number(req.params.id);
-   const patente = req.params.patente;
+  const id = Number(req.params.id);
 
-   const eliminado = AutoService.deleteA(idDuenio, patente);
+  const eliminado = autoService.deleteA(id);
 
-   if (!eliminado) {
-     res.status(404).json({ error: "Auto no encontrado" });
-     return;
-   }
-   res.status(200).json({ mensaje: "Auto eliminado correctamente" });
- };
+  if (!eliminado) {
+    res.status(404).json({ error: 'Auto no encontrado' });
+    return;
+  }
+
+  res.status(201).send();
+};

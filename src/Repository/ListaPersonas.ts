@@ -1,6 +1,6 @@
-import Persona from "../Modelo/Persona";
-import Auto from "../Modelo/Auto";
-import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from "../Repository/ListaAutos";
+import Persona from "../modelo/persona";
+import Auto from "../modelo/auto";
+import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from './listaAutos';
 
 
 let Personas : Persona[] = [];

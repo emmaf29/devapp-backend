@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { listarP, buscarid, addP, edit, deleteP } from '../Controller/PersonaController';
+import { listarP, buscarid, addP, edit, deleteP } from '../controller/personaController';
 
 const router = Router();
 

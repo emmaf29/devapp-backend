@@ -1,5 +1,5 @@
 import { Router } from "express";
-import  {listarA, buscarA, addAuto, editAuto, deleteA} from "../Controller/AutoController";
+import  {listarA, buscarA, addAuto, editA, deleteA} from "../controller/autoController";
 
 const router = Router();
 
@@ -7,7 +7,7 @@ const router = Router();
 router.get('/autos', listarA);
 router.get('/autos/:id',buscarA);
 router.post('/auto', addAuto);
-router.put('/auto/:idDuenio/:patente', editAuto);
-router.delete('/autos/:id/:patente', deleteA);
+router.put('/auto/:id', editA);
+router.delete('/autos/:id', deleteA);
 
 export default router;

@@ -1,8 +1,8 @@
-import Auto from "../Modelo/Auto";
+import Auto from "../modelo/auto";
 
 // Definir autos
 const Ferrari: Auto = {
-    idDuenio: 1,
+    id: 1,
     anio: 2003,
     color: 'Blanco',
     marca: 'Ferrari',
@@ -13,7 +13,7 @@ const Ferrari: Auto = {
 };
 
 const ToyotaCorolla: Auto = {
-    idDuenio: 2,
+    id: 2,
     anio: 2020,
     color: 'Gris',
     marca: 'Toyota',
@@ -24,7 +24,7 @@ const ToyotaCorolla: Auto = {
 };
 
 const FordFiesta: Auto = {
-    idDuenio: 2,
+    id: 2,
     anio: 2019,
     color: 'Rojo',
     marca: 'Ford',
@@ -35,7 +35,7 @@ const FordFiesta: Auto = {
 };
 
 const ChevroletCruze: Auto = {
-    idDuenio: 3,
+    id: 3,
     anio: 2022,
     color: 'Negro',
     marca: 'Chevrolet',
@@ -46,7 +46,7 @@ const ChevroletCruze: Auto = {
 };
 
 const BMWX5: Auto = {
-    idDuenio: 5,
+    id: 5,
     anio: 2023,
     color: 'Azul',
     marca: 'BMW',

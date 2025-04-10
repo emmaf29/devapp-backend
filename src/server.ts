@@ -4,15 +4,12 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import process from 'process';
-import Persona from './Modelo/Persona';
-import Auto from './Modelo/Auto';
-import { Request, Response } from 'express';
-import { listarP, buscarid, addP, edit, deleteP } from './Controller/PersonaController';
-import {listarA, buscarA, addAuto, editAuto, deleteA} from './Controller/AutoController';
+import Persona from './modelo/persona';
+//import { listarP, buscarid, addP, edit, deleteP } from './Controller/PersonaController';
+//import {listarA, buscarA, addAuto, editA, deleteA} from './Controller/AutoController';
 
-
-import personaRuta from './Rutas/PersonaRuta';
-//import autoRuta from './Rutas/AutoRuta';
+import personaRuta from './rutas/personaRuta';
+import autoRuta from './rutas/autoRuta';
 
 
 
@@ -48,12 +45,12 @@ app.delete('/persona/:id',deleteP);*/
 
 
 //autos
-//app.use('/', autoRuta);
-app.get('/autos', listarA);
+app.use('/', autoRuta);
+/*app.get('/autos', listarA);
 app.get('/autos/:id',buscarA);
 app.post('/auto', addAuto);
 app.put('/auto/:idDuenio/:patente', editAuto);
-app.delete('/autos/:id/:patente', deleteA);
+app.delete('/autos/:id/:patente', deleteA);*/
 
 
 app.get('/', (req, res) => {
