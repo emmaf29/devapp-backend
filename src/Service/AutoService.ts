@@ -18,7 +18,7 @@ const listarA = (id?: number) => {
       id : a.id,
       marca: a.marca,
       modelo: a.modelo,
-      año: a.anio,
+      anio: a.anio,
       patente: a.patente
     }));
   };

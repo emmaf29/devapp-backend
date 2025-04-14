@@ -1,7 +1,6 @@
 import ListaPersonas, { listaPersonas } from "../repository/listaPersonas";
 import Persona from "../modelo/persona";
 
-//let ID = 1;
 
 //browse
 const listarP = () => {
@@ -23,7 +22,8 @@ const listarP = () => {
 //add
 const addP = (Persona : Persona): number | null => {
     const {nombre,apellido,id,dni,fechaDeNacimiento,genero,autos,esDonante} = Persona;
- // campos obligatorios
+
+    // campos obligatorios
  if (typeof nombre !== 'string' ||
 typeof apellido !== 'string' ||
 typeof dni !== 'string' ||
@@ -33,7 +33,7 @@ typeof genero !== 'string' ||
 typeof esDonante !== 'boolean') {
 return null;
 }
-
+// id maximo para cambiar el largo;
  const nuevaPersona: Persona = {
   id: listaPersonas.length +1,
   nombre,
