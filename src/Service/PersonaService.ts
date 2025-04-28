@@ -103,4 +103,3 @@ export const deleteP = (id: number): boolean  => {
 */
 
 export default {listarP, buscarid,addP,editP,deleteP};
-

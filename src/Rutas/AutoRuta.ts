@@ -5,7 +5,7 @@ const router = Router();
 
 //browse
 router.get('/autos', listarA);
-router.get('/autos/:id',buscarA);
+router.get('/autos/:id', buscarA);
 router.post('/auto', addAuto);
 router.put('/auto/:id', editA);
 router.delete('/autos/:id', deleteA);

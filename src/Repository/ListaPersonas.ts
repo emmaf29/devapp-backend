@@ -79,4 +79,3 @@ const listaPersonas: Persona[] = [
 ];
 
 export { listaPersonas };
-
