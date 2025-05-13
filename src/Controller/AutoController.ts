@@ -23,7 +23,7 @@ export const buscarA = (req: Request, res: Response) => {
 };
 
 //add
-export const addAuto = (req: Request, res: Response) => {
+export const addA = (req: Request, res: Response) => {
    const agregado = autoService.agregarA(req.body.idDuenio, req.body);
 
    if (!agregado) {
@@ -63,3 +63,5 @@ export const editA = (req: Request, res: Response) => {
 
   res.status(201).send();
 };
+
+export default { listarA, buscarA, addA, editA, deleteA };

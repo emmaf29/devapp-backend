@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import personaService, { editP } from '../service/personaService';
+import personaService from '../service/personaService';
 
 //browse
 export const listarP = (req: Request, res: Response) => {
@@ -8,13 +8,13 @@ export const listarP = (req: Request, res: Response) => {
 };
 
 // read
- export const buscarid = (req: Request, res: Response) => {
+export const buscarid = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const persona = personaService.buscarid(id);
 
   if (!persona) {
-     res.status(404).json({ error: 'persona no encontrada' });
-     return;
+    res.status(404).json({ error: 'persona no encontrada' });
+    return;
   }
   res.status(200).json(persona);
 };
@@ -31,28 +31,29 @@ export const addP = (req: Request, res: Response) => {
 };
 
 //edit
-  export const edit= (req: Request, res: Response) => {
+export const editP = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const cambios = req.body;
 
-  const editado = editP(id, cambios);
+  const editado = personaService.editP(id, cambios);
 
   if (!editado) {
-   res.status(404).json({ error: 'datos inválidos' });
-   return;
+    res.status(404).json({ error: 'datos inválidos' });
+    return;
   }
   res.status(201).json({ mensaje: 'Persona actualizada correctamente' });
 };
-
 
 // delete
 export const deleteP = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const eliminado = personaService.deleteP(id);
 
-  if (!eliminado){
-    res.status(404).json({error: "persona no encontrada"});
+  if (!eliminado) {
+    res.status(404).json({ error: 'persona no encontrada' });
     return;
   }
- res.status(201).send();
+  res.status(201).send();
 };
+
+export default { listarP, buscarid, addP, editP, deleteP };
