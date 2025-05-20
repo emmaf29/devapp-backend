@@ -1,16 +1,14 @@
 import { Request, Response } from 'express';
 import personaService from '../service/personaService';
 
-//browse
-export const listarP = (req: Request, res: Response) => {
-  const personas = personaService.listarP();
+export const listarP = async (req: Request, res: Response) => {
+  const personas = await personaService.listarP();
   res.status(200).json(personas);
 };
 
-// read
-export const buscarid = (req: Request, res: Response) => {
+export const buscarid = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const persona = personaService.buscarid(id);
+  const persona = await personaService.buscarid(id);
 
   if (!persona) {
     res.status(404).json({ error: 'persona no encontrada' });
@@ -19,9 +17,8 @@ export const buscarid = (req: Request, res: Response) => {
   res.status(200).json(persona);
 };
 
-// add
-export const addP = (req: Request, res: Response) => {
-  const agregado = personaService.addP(req.body);
+export const addP = async (req: Request, res: Response) => {
+  const agregado = await personaService.addP(req.body);
 
   if (!agregado) {
     res.status(400).json({ error: 'Datos inválidos' });
@@ -30,12 +27,11 @@ export const addP = (req: Request, res: Response) => {
   res.status(200).json({ id: agregado });
 };
 
-//edit
-export const editP = (req: Request, res: Response) => {
+export const edit = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const cambios = req.body;
 
-  const editado = personaService.editP(id, cambios);
+  const editado = await personaService.editP(id, cambios);
 
   if (!editado) {
     res.status(404).json({ error: 'datos inválidos' });
@@ -44,10 +40,9 @@ export const editP = (req: Request, res: Response) => {
   res.status(201).json({ mensaje: 'Persona actualizada correctamente' });
 };
 
-// delete
-export const deleteP = (req: Request, res: Response) => {
+export const deleteP = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const eliminado = personaService.deleteP(id);
+  const eliminado = await personaService.deleteP(id);
 
   if (!eliminado) {
     res.status(404).json({ error: 'persona no encontrada' });
@@ -56,4 +51,4 @@ export const deleteP = (req: Request, res: Response) => {
   res.status(201).send();
 };
 
-export default { listarP, buscarid, addP, editP, deleteP };
+export default {listarP,buscarid,addP,edit,deleteP};

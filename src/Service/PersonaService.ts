@@ -3,8 +3,9 @@ import Persona from "../modelo/persona";
 
 const personaRepo = RepositoryFactory.getPersonaRepository();
 
-const listarP = () => {
-  return personaRepo.findAll().map(p => ({
+const listarP = async () => {
+  const personas = await personaRepo.findAll();
+  return personas.map(p => ({
     id: p.id,
     dni: p.dni,
     nombre: p.nombre,
@@ -12,11 +13,11 @@ const listarP = () => {
   }));
 };
 
-const buscarid = (id: number): Persona | undefined => {
-  return personaRepo.findById(id);
+const buscarid = async (id: number): Promise<Persona | undefined> => {
+  return await personaRepo.findById(id);
 };
 
-const addP = (persona: Persona): number | null => {
+const addP = async (persona: Persona): Promise<number | null> => {
   const { nombre, apellido, dni, fechaDeNacimiento, genero, autos, esDonante } = persona;
 
   if (
@@ -42,17 +43,16 @@ const addP = (persona: Persona): number | null => {
     esDonante,
   };
 
-  const guardada = personaRepo.save(nuevaPersona);
+  const guardada = await personaRepo.save(nuevaPersona);
   return guardada.id;
 };
 
-const editP = (id: number, cambios: Partial<Persona>): boolean => {
-  return personaRepo.update(id, cambios);
+const editP = async (id: number, cambios: Partial<Persona>): Promise<boolean> => {
+  return await personaRepo.update(id, cambios);
 };
 
-const deleteP = (id: number): boolean => {
-  return personaRepo.delete(id);
+const deleteP = async (id: number): Promise<boolean> => {
+  return await personaRepo.delete(id);
 };
 
 export default { listarP, buscarid, addP, editP, deleteP };
-

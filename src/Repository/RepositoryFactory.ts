@@ -1,9 +1,13 @@
-import StaticPersonaRepository from "./StaticPersonaRepository";
 import IRepository from "./IRepository";
 import Persona from "../modelo/persona";
+import Auto from "../modelo/auto";
+
+import StaticPersonaRepository from "./StaticPersonaRepository";
+import StaticAutoRepository from "./StaticAutoRepository";
 
 class RepositoryFactory {
   private static personaRepository: IRepository<Persona>;
+  private static autoRepository: IRepository<Auto>;
 
   static getPersonaRepository(): IRepository<Persona> {
     if (!this.personaRepository) {
@@ -11,9 +15,16 @@ class RepositoryFactory {
     }
     return this.personaRepository;
   }
+
+  static getAutoRepository(): IRepository<Auto> {
+    if (!this.autoRepository) {
+      this.autoRepository = StaticAutoRepository;
+    }
+    return this.autoRepository;
+  }
 }
 
 export default RepositoryFactory;
 
 
-// te dice cual usar si uno estatico o uno de mongo
+

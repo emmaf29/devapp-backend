@@ -1,9 +1,9 @@
 
 export default interface IRepository<T> {
-  findAll(): T[];
-  findById(id: number): T | undefined;
-  save(entidad: T): T;
-  update(id: number, cambios: Partial<T>): boolean;
-  delete(id: number): boolean;
+  findAll(): Promise<T[]>;
+  findById(id: number): Promise<T | undefined>;
+  save(entidad: T): Promise<T>;
+  update(id: number, cambios: Partial<T>): Promise<boolean>;
+  delete(id: number): Promise<boolean>;
 }
-// defino la interfaz del repo
+
