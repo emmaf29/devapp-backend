@@ -1,14 +1,14 @@
 import Auto from "../modelo/auto";
 import IRepository from "../repository/IRepository";
 import RepositoryFactory from "../repository/RepositoryFactory";
-import StaticAutoRepository from "../repository/StaticAutoRepository";
+import StaticAutoRepository from "../repository/local/StaticAutoRepository";
 
-const autoRepo = RepositoryFactory.getAutoRepository();
+const autoRepo = RepositoryFactory.autoRepository();
 
 const listarA = async (): Promise<Partial<Auto>[]> => {
   const autos = await autoRepo.findAll();
   return autos.map(a => ({
-    id: a.id,
+    id: a._id,
     marca: a.marca,
     modelo: a.modelo,
     anio: a.anio,
@@ -24,7 +24,7 @@ const agregarA = async (auto: Omit<Auto, "id">): Promise<Auto | null> => {
   const autos = await autoRepo.findAll();
   if (autos.some(a => a.patente === auto.patente)) return null;
 
-  return await autoRepo.save({ ...auto, id: 0 });
+  return await autoRepo.save({ ...auto, _id: 0 });
 };
 
 const editA = async (id: number, cambios: Partial<Auto>): Promise<boolean> => {

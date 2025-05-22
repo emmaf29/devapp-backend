@@ -1,7 +1,8 @@
 import RepositoryFactory from "../repository/RepositoryFactory";
 import Persona from "../modelo/persona";
 
-const personaRepo = RepositoryFactory.getPersonaRepository();
+const personaRepo = RepositoryFactory.personaRepository();
+
 
 const listarP = async () => {
   const personas = await personaRepo.findAll();

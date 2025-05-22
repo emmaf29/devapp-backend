@@ -1,5 +1,5 @@
-import Persona from "../modelo/persona";
-import IRepository from "./IRepository";
+import Persona from "../../modelo/persona";
+import IRepository from "../IRepository";
 import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from './listaAutos';
 
 let personas: Persona[] = [
