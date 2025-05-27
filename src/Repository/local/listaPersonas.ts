@@ -1,7 +1,7 @@
-    /*import Persona from "../modelo/persona";
+    import Persona from '../../modelo/persona';
     import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from './listaAutos';
 
-    const listaPersonas: Persona[] = [
+    const personas: Persona[] = [
     {
     id: 1,
     nombre: 'Ana',
@@ -54,4 +54,4 @@
     }
     ];
 
-    export default listaPersonas;*/
+    export default personas;

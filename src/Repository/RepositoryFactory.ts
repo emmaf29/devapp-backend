@@ -6,6 +6,10 @@ import StaticPersonaRepository from './local/StaticPersonaRepository';
 import StaticAutoRepository from './local/StaticAutoRepository';
 import { MongoPersonaRepository } from './mongo/PersonaMongoRepository';
 import { MongoAutoRepository } from './mongo/AutoMongoRepository';
+import { FirebasePersonaRepository } from './firebase/PersonaFirebaseRepository';
+import { FirebaseAutoRepository } from './firebase/PersonaFirebaseRepository';
+
+
 
 export abstract class RepositoryFactory {
   private static personaRepositorySingletonInstance: IRepository<Persona> | undefined = undefined;
@@ -33,6 +37,11 @@ export abstract class RepositoryFactory {
     if (tipo === 'mongodb') {
       return new MongoPersonaRepository();
     }
+
+    if (tipo === 'firebase') {
+      return new FirebasePersonaRepository();
+    }
+
     return StaticPersonaRepository;
   }
 
@@ -42,6 +51,11 @@ export abstract class RepositoryFactory {
     if (tipo === 'mongodb') {
       return new MongoAutoRepository();
     }
+
+    if (tipo === 'firebase') {
+      return new FirebaseAutoRepository();
+    }
+
     return StaticAutoRepository;
   }
 }
