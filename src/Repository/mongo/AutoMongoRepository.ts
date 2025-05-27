@@ -1,4 +1,3 @@
-// src/repository/mongo/MongoAutoRepository.ts
 import connectToMongo from "../../coneccion/mongo"
 import Auto from "../../modelo/auto";
 import IRepository from "../IRepository";
@@ -10,9 +9,9 @@ export class MongoAutoRepository implements IRepository<Auto> {
   }
 
   async findAll(): Promise<Auto[]> {
-    const col = await this.collection();
-    const personas = await col.find().toArray();
-    return personas.flatMap((p: any) => p.autos ?? []);
+    const coleccion = await this.collection();
+    const personas = await coleccion.find().toArray();
+    return personas.flatMap((p: any) => p.autos || []);
   }
 
   async findById(id: number): Promise<Auto | undefined> {
@@ -20,61 +19,65 @@ export class MongoAutoRepository implements IRepository<Auto> {
     return autos.find(a => a._id === id);
   }
 
+  private generarNuevoId(autos: Auto[]): number {
+    return autos.length ? Math.max(...autos.map(a => a._id ?? 0)) + 1 : 1;
+  }
+
+  private async actualizarPersona(personaId: number, autos: Auto[]) {
+    const coleccion = await this.collection();
+    await coleccion.updateOne({ id: personaId }, { $set: { autos } });
+  }
+
   async save(auto: Auto): Promise<Auto> {
-  const col = await this.collection();
-  const persona = await col.findOne({ id: auto.idDuenio });
+  if (auto._id) throw new Error("El auto ya existe, para modificar usa update.");
+
+  const coleccion = await this.collection();
+  const persona = await coleccion.findOne({ id: auto.idDuenio });
 
   if (!persona) throw new Error("Persona no encontrada");
 
-  console.log("Auto recibido para guardar:", auto);
+  const autos = persona.autos || [];
+  auto._id = this.generarNuevoId(await this.findAll());
 
-  if (!auto._id) {
-    const todos = await this.findAll();
-    const maxId = todos.length ? Math.max(...todos.map(a => a._id ?? 0)) : 0;
-    auto._id = maxId + 1;
-    console.log("ID asignado al auto:", auto._id);
-  }
+  autos.push(auto);
 
-  const autos = persona.autos ?? [];
-  const index = autos.findIndex((a: Auto) => a._id === auto._id);
-  if (index !== -1) {
-    autos[index] = auto;
-  } else {
-    autos.push(auto);
-  }
-
-  await col.updateOne({ id: auto.idDuenio }, { $set: { autos } });
+  await this.actualizarPersona(auto.idDuenio, autos);
   return auto;
 }
 
-  async update(id: number, cambios: Partial<Auto>): Promise<boolean> {
-    const col = await this.collection();
-    const personas = await col.find().toArray();
+async update(id: number, cambios: Partial<Auto>): Promise<boolean> {
+  const coleccion = await this.collection();
 
-    for (const persona of personas) {
-      const autos = persona.autos ?? [];
-      const auto = autos.find((a: Auto) => a._id === id);
-      if (auto) {
-        Object.assign(auto, cambios);
-        await col.updateOne({ id: persona.id }, { $set: { autos } });
-        return true;
-      }
-    }
-    return false;
-  }
+  const persona = await coleccion.findOne({ 'autos._id': id });
+  if (!persona) return false;
+
+  const autos = persona.autos || [];
+  const auto = autos.find((a: Auto) => a._id === id);
+  if (!auto) return false;
+
+  auto.marca = cambios.marca ?? auto.marca;
+  auto.modelo = cambios.modelo ?? auto.modelo;
+  auto.anio = cambios.anio ?? auto.anio;
+  auto.color = cambios.color ?? auto.color;
+  auto.patente = cambios.patente ?? auto.patente;
+
+  await coleccion.updateOne({ id: persona.id }, { $set: { autos } });
+  return true;
+
+}
 
   async delete(id: number): Promise<boolean> {
-    const col = await this.collection();
-    const personas = await col.find().toArray();
+    const coleccion = await this.collection();
+    const persona = await coleccion.findOne({ "autos._id": id });
 
-    for (const persona of personas) {
-      const original = persona.autos ?? [];
-      const nuevosAutos = original.filter((a: Auto) => a._id !== id);
-      if (nuevosAutos.length < original.length) {
-        await col.updateOne({ id: persona.id }, { $set: { autos: nuevosAutos } });
-        return true;
-      }
-    }
-    return false;
+    if (!persona) return false;
+
+    const original = persona.autos || [];
+    const nuevosAutos = original.filter((a: Auto) => a._id !== id);
+
+    if (nuevosAutos.length === original.length) return false;
+
+    await this.actualizarPersona(persona.id, nuevosAutos);
+    return true;
   }
 }

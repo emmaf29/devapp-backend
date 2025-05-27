@@ -1,6 +1,6 @@
 import Auto from "../modelo/auto";
 import IRepository from "../repository/IRepository";
-import RepositoryFactory from "../repository/RepositoryFactory";
+import { RepositoryFactory } from "../repository/RepositoryFactory";
 import StaticAutoRepository from "../repository/local/StaticAutoRepository";
 
 const autoRepo = RepositoryFactory.autoRepository();

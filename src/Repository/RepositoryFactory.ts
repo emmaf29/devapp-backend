@@ -1,40 +1,47 @@
+import process from 'process';
 import IRepository from './IRepository';
 import Persona from '../modelo/persona';
+import Auto from '../modelo/auto';
 import StaticPersonaRepository from './local/StaticPersonaRepository';
 import StaticAutoRepository from './local/StaticAutoRepository';
 import { MongoPersonaRepository } from './mongo/PersonaMongoRepository';
 import { MongoAutoRepository } from './mongo/AutoMongoRepository';
-import Auto from '../modelo/auto';
 
-let personaRepositoryInstance: IRepository<Persona> | undefined = undefined;
-let autoRepositoryInstance: IRepository<Auto> | undefined = undefined;
+export abstract class RepositoryFactory {
+  private static personaRepositorySingletonInstance: IRepository<Persona> | undefined = undefined;
+  private static autoRepositorySingletonInstance: IRepository<Auto> | undefined = undefined;
 
-const RepositoryFactory = {
-  personaRepository(): IRepository<Persona> {
-    if (!personaRepositoryInstance) {
-      personaRepositoryInstance = getPersonaRepositoryByConfiguration();
+  public static personaRepository(): IRepository<Persona> {
+    if (!RepositoryFactory.personaRepositorySingletonInstance) {
+      RepositoryFactory.personaRepositorySingletonInstance =
+        RepositoryFactory.getPersonaRepositoryByConfiguration();
     }
-    return personaRepositoryInstance;
-  },
-
-  autoRepository(): IRepository<Auto> {
-    if (!autoRepositoryInstance) {
-      autoRepositoryInstance = getAutoRepositoryByConfiguration();
-    }
-    return autoRepositoryInstance;
+    return RepositoryFactory.personaRepositorySingletonInstance;
   }
-};
 
-function getPersonaRepositoryByConfiguration(): IRepository<Persona> {
-  const tipo = process.env.REPOSITORY?.toLowerCase();
-  if (tipo === 'mongodb') return new MongoPersonaRepository();
-  return StaticPersonaRepository;
+  public static autoRepository(): IRepository<Auto> {
+    if (!RepositoryFactory.autoRepositorySingletonInstance) {
+      RepositoryFactory.autoRepositorySingletonInstance =
+        RepositoryFactory.getAutoRepositoryByConfiguration();
+    }
+    return RepositoryFactory.autoRepositorySingletonInstance;
+  }
+
+  private static getPersonaRepositoryByConfiguration(): IRepository<Persona> {
+    const tipo = process.env.REPOSITORY;
+
+    if (tipo === 'mongodb') {
+      return new MongoPersonaRepository();
+    }
+    return StaticPersonaRepository;
+  }
+
+  private static getAutoRepositoryByConfiguration(): IRepository<Auto> {
+    const tipo = process.env.REPOSITORY;
+
+    if (tipo === 'mongodb') {
+      return new MongoAutoRepository();
+    }
+    return StaticAutoRepository;
+  }
 }
-
-function getAutoRepositoryByConfiguration(): IRepository<Auto> {
-  const tipo = process.env.REPOSITORY?.toLowerCase();
-  if (tipo === 'mongodb') return new MongoAutoRepository();
-  return StaticAutoRepository;
-}
-
-export default RepositoryFactory;

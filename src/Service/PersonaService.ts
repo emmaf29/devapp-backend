@@ -1,4 +1,4 @@
-import RepositoryFactory from "../repository/RepositoryFactory";
+import { RepositoryFactory } from "../repository/RepositoryFactory";
 import Persona from "../modelo/persona";
 
 const personaRepo = RepositoryFactory.personaRepository();
