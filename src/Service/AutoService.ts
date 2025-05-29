@@ -12,7 +12,8 @@ const listarA = async (): Promise<Partial<Auto>[]> => {
     marca: a.marca,
     modelo: a.modelo,
     anio: a.anio,
-    patente: a.patente
+    patente: a.patente,
+    idDuenio: a.idDuenio
   }));
 };
 
@@ -21,13 +22,29 @@ const buscarPorId = async (id: number): Promise<Auto | undefined> => {
 };
 
 const agregarA = async (auto: Omit<Auto, "id">): Promise<Auto | null> => {
+  const { marca, modelo, anio, color, patente, idDuenio } = auto;
+
+  if (!marca || !modelo || !anio || !color || !patente) {
+    return null;
+  }
+
   const autos = await autoRepo.findAll();
-  if (autos.some(a => a.patente === auto.patente)) return null;
+  if (autos.some(a => a.patente === patente)) return null;
 
   return await autoRepo.save({ ...auto, _id: 0 });
 };
 
+
 const editA = async (id: number, cambios: Partial<Auto>): Promise<boolean> => {
+    const auto = await autoRepo.findById(id);
+  if (!auto) return false;
+
+  auto.marca = cambios.marca ?? auto.marca;
+  auto.modelo = cambios.modelo ?? auto.modelo;
+  auto.anio = cambios.anio ?? auto.anio;
+  auto.color = cambios.color ?? auto.color;
+  auto.patente = cambios.patente ?? auto.patente;
+  auto.idDuenio = cambios.idDuenio ?? auto.idDuenio;
   return await autoRepo.update(id, cambios);
 };
 

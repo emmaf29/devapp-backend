@@ -15,26 +15,16 @@ const StaticAutoRepository: IRepository<Auto> = {
   },
 
 async save(auto: Auto): Promise<Auto> {
-  if (!auto || !auto.marca || !auto.modelo || !auto.anio || !auto.color || !auto.patente) {
-    throw new Error("Datos de auto incompletos");
-  }
   auto._id = autoIdCounter++;
   autos.push(auto);
   return auto;
 },
 
-async update(id: number, cambios: Partial<Auto>): Promise<boolean> {
+async update(id: number, autoActualizado: Auto): Promise<boolean> {
   const index = autos.findIndex(a => a._id === id);
   if (index === -1) return false;
 
-  const auto = autos[index];
-
-  auto.marca = cambios.marca ?? auto.marca;
-  auto.modelo = cambios.modelo ?? auto.modelo;
-  auto.anio = cambios.anio ?? auto.anio;
-  auto.color = cambios.color ?? auto.color;
-  auto.patente = cambios.patente ?? auto.patente;
-
+  autos[index] = autoActualizado;
   return true;
 },
 

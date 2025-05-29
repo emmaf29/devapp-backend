@@ -1,10 +1,11 @@
-// Importamos nuestras dependencias
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import process from 'process';
 import Persona from './modelo/persona';
+import { errorHandler } from './middleware/ErrorHandlers';
+import { notFoundHandler } from './middleware/NotFoundHandler';
 //import { listarP, buscarid, addP, edit, deleteP } from './Controller/PersonaController';
 //import {listarA, buscarA, addAuto, editA, deleteA} from './Controller/AutoController';
 
@@ -58,6 +59,9 @@ app.get('/', (req, res) => {
 });
 
 // ...
+// errores
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // Levantamos el servidor en el puerto que configuramos
 app.listen(port, () => {

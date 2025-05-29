@@ -24,7 +24,6 @@ async findById(id: number): Promise<Persona | undefined> {
 }
 
 
-
 async save(persona: Persona): Promise<Persona> {
     if(!persona.id){
      const todasPersonas = await this.findAll();

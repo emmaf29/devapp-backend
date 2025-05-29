@@ -49,9 +49,21 @@ const addP = async (persona: Persona): Promise<number | null> => {
 };
 
 const editP = async (id: number, cambios: Partial<Persona>): Promise<boolean> => {
-  return await personaRepo.update(id, cambios);
-};
+  const persona = await personaRepo.findById(id);
+  if (!persona) return false;
 
+  persona.nombre = cambios.nombre ?? persona.nombre;
+  persona.apellido = cambios.apellido ?? persona.apellido;
+  persona.dni = cambios.dni ?? persona.dni;
+  persona.fechaDeNacimiento = cambios.fechaDeNacimiento
+    ? new Date(cambios.fechaDeNacimiento)
+    : persona.fechaDeNacimiento;
+  persona.genero = cambios.genero ?? persona.genero;
+  persona.autos = cambios.autos ?? persona.autos;
+  persona.esDonante = cambios.esDonante ?? persona.esDonante;
+
+  return await personaRepo.update(id, persona);
+};
 const deleteP = async (id: number): Promise<boolean> => {
   return await personaRepo.delete(id);
 };

@@ -1,6 +1,6 @@
 import Auto from "../../modelo/auto";
 
-// Definir autos
+
 const Ferrari: Auto = {
     _id: 1,
     idDuenio: 1,

@@ -6,9 +6,8 @@ import StaticPersonaRepository from './local/StaticPersonaRepository';
 import StaticAutoRepository from './local/StaticAutoRepository';
 import { MongoPersonaRepository } from './mongo/PersonaMongoRepository';
 import { MongoAutoRepository } from './mongo/AutoMongoRepository';
-import { FirebasePersonaRepository } from './firebase/PersonaFirebaseRepository';
-import { FirebaseAutoRepository } from './firebase/PersonaFirebaseRepository';
-
+//import { FirebasePersonaRepository } from './firebase/PersonaFirebaseRepository';
+//import { FirebaseAutoRepository } from './firebase/PersonaFirebaseRepository';
 
 
 export abstract class RepositoryFactory {
@@ -38,9 +37,9 @@ export abstract class RepositoryFactory {
       return new MongoPersonaRepository();
     }
 
-    if (tipo === 'firebase') {
+   /* if (tipo === 'firebase') {
       return new FirebasePersonaRepository();
-    }
+    }*/
 
     return StaticPersonaRepository;
   }
@@ -52,9 +51,9 @@ export abstract class RepositoryFactory {
       return new MongoAutoRepository();
     }
 
-    if (tipo === 'firebase') {
+   /* if (tipo === 'firebase') {
       return new FirebaseAutoRepository();
-    }
+    }*/
 
     return StaticAutoRepository;
   }

@@ -21,20 +21,13 @@ const StaticPersonaRepository: IRepository<Persona> = {
     return persona;
   },
 
-  async update(id: number, cambios: Partial<Persona>): Promise<boolean> {
-    const persona = personas.find(p => p.id === id);
-    if (!persona) return false;
+async update(id: number, personaActualizada: Persona): Promise<boolean> {
+  const index = personas.findIndex(p => p.id === id);
+  if (index === -1) return false;
 
-    persona.nombre = cambios.nombre ?? persona.nombre;
-    persona.apellido = cambios.apellido ?? persona.apellido;
-    persona.dni = cambios.dni ?? persona.dni;
-    persona.fechaDeNacimiento = cambios.fechaDeNacimiento ? new Date(cambios.fechaDeNacimiento) : persona.fechaDeNacimiento;
-    persona.genero = cambios.genero ?? persona.genero;
-    persona.autos = cambios.autos ?? persona.autos;
-    persona.esDonante = cambios.esDonante ?? persona.esDonante;
-
-    return true;
-  },
+  personas[index] = personaActualizada;
+  return true;
+},
 
   async delete(id: number): Promise<boolean> {
     const index = personas.findIndex(p => p.id === id);

@@ -33,27 +33,11 @@ export class MongoPersonaRepository implements IRepository<Persona> {
 
   }
 
-    async update(id: number, cambios: Partial<Persona>): Promise<boolean> {
-    const coleccion = await this.collection();
-    const personaActual = await coleccion.findOne({ id });
-    if (!personaActual) return false;
-
-    const actualizada = {
-     id,
-     nombre: cambios.nombre ?? personaActual.nombre,
-     apellido: cambios.apellido ?? personaActual.apellido,
-    dni: cambios.dni ?? personaActual.dni,
-    fechaDeNacimiento: cambios.fechaDeNacimiento
-    ? new Date(cambios.fechaDeNacimiento)
-    : personaActual.fechaDeNacimiento,
-    genero: cambios.genero ?? personaActual.genero,
-    autos: cambios.autos ?? personaActual.autos,
-    esDonante: cambios.esDonante ?? personaActual.esDonante,
-};
-
-    await coleccion.replaceOne({ id }, actualizada);
-    return true;
-  }
+async update(id: number, actualizada: Persona): Promise<boolean> {
+  const coleccion = await this.collection();
+  const resultado = await coleccion.replaceOne({ id }, actualizada);
+  return resultado.modifiedCount === 1;
+}
 
   async delete(id: number): Promise<boolean> {
     const coleccion = await this.collection();

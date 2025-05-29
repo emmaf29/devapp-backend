@@ -45,25 +45,24 @@ export class MongoAutoRepository implements IRepository<Auto> {
   return auto;
 }
 
-async update(id: number, cambios: Partial<Auto>): Promise<boolean> {
+async update(id: number, autoActualizado: Partial<Auto>): Promise<boolean> {
   const coleccion = await this.collection();
 
-  const persona = await coleccion.findOne({ 'autos._id': id });
+  const persona = await coleccion.findOne({ "autos._id": id });
   if (!persona) return false;
 
   const autos = persona.autos || [];
-  const auto = autos.find((a: Auto) => a._id === id);
-  if (!auto) return false;
 
-  auto.marca = cambios.marca ?? auto.marca;
-  auto.modelo = cambios.modelo ?? auto.modelo;
-  auto.anio = cambios.anio ?? auto.anio;
-  auto.color = cambios.color ?? auto.color;
-  auto.patente = cambios.patente ?? auto.patente;
+  const index = autos.findIndex((a: Auto) => a._id === id);
+  if (index === -1) return false;
+
+  autos[index] = {
+    ...autos[index],
+    ...autoActualizado,
+  };
 
   await coleccion.updateOne({ id: persona.id }, { $set: { autos } });
   return true;
-
 }
 
   async delete(id: number): Promise<boolean> {

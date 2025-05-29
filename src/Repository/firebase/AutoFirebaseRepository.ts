@@ -1,4 +1,4 @@
-import { Firestore, collection, doc, getDocs, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
+/*import { Firestore, collection, doc, getDocs, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import db from "../../coneccion/Firebase";
 import Auto from "../../modelo/auto";
 import IRepository from "../IRepository";
@@ -20,4 +20,4 @@ export class FirebaseAutoRepository implements IRepository<Auto>{
         throw new Error("Method not implemented.");
     }
 
-}
+}*/
