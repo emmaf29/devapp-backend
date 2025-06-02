@@ -17,3 +17,9 @@ const connectToMongo = async () => {
 };
 
 export default connectToMongo;
+
+
+/*
+REPOSITORY=mongodb
+MONGO_URI=mongodb://localhost:27017
+MONGO_DB_NAME=mi_base*/

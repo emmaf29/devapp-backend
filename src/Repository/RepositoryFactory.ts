@@ -6,9 +6,8 @@ import StaticPersonaRepository from './local/StaticPersonaRepository';
 import StaticAutoRepository from './local/StaticAutoRepository';
 import { MongoPersonaRepository } from './mongo/PersonaMongoRepository';
 import { MongoAutoRepository } from './mongo/AutoMongoRepository';
-//import { FirebasePersonaRepository } from './firebase/PersonaFirebaseRepository';
-//import { FirebaseAutoRepository } from './firebase/PersonaFirebaseRepository';
-
+import { FirebasePersonaRepository } from './firebase/PersonaFirebaseRepository';
+import { FirebaseAutoRepository } from './firebase/AutoFirebaseRepository';
 
 export abstract class RepositoryFactory {
   private static personaRepositorySingletonInstance: IRepository<Persona> | undefined = undefined;
@@ -37,24 +36,25 @@ export abstract class RepositoryFactory {
       return new MongoPersonaRepository();
     }
 
-   /* if (tipo === 'firebase') {
+    if (tipo === 'firebase') {
       return new FirebasePersonaRepository();
-    }*/
+    }
 
     return StaticPersonaRepository;
   }
 
-  private static getAutoRepositoryByConfiguration(): IRepository<Auto> {
-    const tipo = process.env.REPOSITORY;
+private static getAutoRepositoryByConfiguration(): IRepository<Auto> {
+  const tipo = process.env.REPOSITORY;
 
-    if (tipo === 'mongodb') {
-      return new MongoAutoRepository();
-    }
-
-   /* if (tipo === 'firebase') {
-      return new FirebaseAutoRepository();
-    }*/
-
-    return StaticAutoRepository;
+  if (tipo === 'mongodb') {
+    return new MongoAutoRepository();
   }
+
+  if (tipo === 'firebase') {
+    return new FirebaseAutoRepository();
+  }
+
+  return StaticAutoRepository;
+
+}
 }
