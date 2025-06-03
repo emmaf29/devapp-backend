@@ -20,11 +20,10 @@ async findById(id: string): Promise<Auto | null> {
   return autos.find(a => a._id === id) || null;
 }
 
-   private async actualizarPersona(id: string, autos: Auto[]) {
+   /*private async actualizarPersona(id: string, autos: Auto[]) {
     const coleccion = await this.collection();
     await coleccion.updateOne({ id }, { $set: { autos } });
-  }
-
+  }*/
 
 async save(auto: Auto): Promise<Auto> {
   const coleccion = await this.collection();
@@ -35,14 +34,14 @@ async save(auto: Auto): Promise<Auto> {
   const autos = persona.autos || [];
   autos.push(auto);
 
-  await this.actualizarPersona(auto.idDuenio, autos);
+  await coleccion.updateOne({ id: auto.idDuenio }, { $set: { autos } });
   return auto;
 }
 
-async update(id: string, autoActualizado: Partial<Auto>): Promise<boolean> {
+async update(id: string, cambios: Partial<Auto>): Promise<boolean> {
   const coleccion = await this.collection();
-
   const persona = await coleccion.findOne({ "autos._id": id });
+
   if (!persona) return false;
 
   const autos = persona.autos || [];
@@ -52,7 +51,7 @@ async update(id: string, autoActualizado: Partial<Auto>): Promise<boolean> {
 
   autos[index] = {
     ...autos[index],
-    ...autoActualizado,
+    ...cambios,
   };
 
   await coleccion.updateOne({ id: persona.id }, { $set: { autos } });
@@ -65,12 +64,13 @@ async update(id: string, autoActualizado: Partial<Auto>): Promise<boolean> {
 
     if (!persona) return false;
 
-    const original = persona.autos || [];
-    const nuevosAutos = original.filter((a: Auto) => a._id !== id);
+    const autos = persona.autos || [];
+    const nuevosAutos = autos.filter((a: Auto) => a._id !== id);
 
-    if (nuevosAutos.length === original.length) return false;
+    if (nuevosAutos.length === autos.length) return false;
 
-    await this.actualizarPersona(persona.id, nuevosAutos);
-    return true;
-  }
+    await coleccion.updateOne({ id: persona.id }, { $set: { autos: nuevosAutos } });
+
+  return true;
+ }
 }

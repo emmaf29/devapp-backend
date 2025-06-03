@@ -47,7 +47,11 @@ export class FirebaseAutoRepository implements IRepository<Auto>{
     const index = autos.findIndex(a => a._id === id);
 
     if (index !== -1){
-      autos [index] = {...autos[index], ...cambios};
+      autos [index] = {
+      ...autos[index],
+       ...cambios
+      };
+
       await updateDoc(doc.ref, {autos});
       return true;
     }
