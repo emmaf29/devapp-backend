@@ -1,7 +1,8 @@
 import Auto from "../modelo/auto";
 import IRepository from "../repository/IRepository";
 import { RepositoryFactory } from "../repository/RepositoryFactory";
-import StaticAutoRepository from "../repository/local/StaticAutoRepository";
+import { randomUUID } from "crypto";
+
 
 const autoRepo = RepositoryFactory.autoRepository();
 
@@ -17,38 +18,54 @@ const listarA = async (): Promise<Partial<Auto>[]> => {
   }));
 };
 
-const buscarPorId = async (id: number): Promise<Auto | undefined> => {
-  return await autoRepo.findById(id);
+const buscarPorId = async (id: string): Promise<Auto | null> => {
+  return await autoRepo.findById(id) || null;
 };
-
-const agregarA = async (auto: Omit<Auto, "id">): Promise<Auto | null> => {
+const agregarA = async (auto: Omit<Auto, "_id">): Promise<Auto | false | null> => {
   const { marca, modelo, anio, color, patente, idDuenio } = auto;
 
-  if (!marca || !modelo || !anio || !color || !patente) {
+  if (
+    typeof marca !== "string" ||
+    typeof modelo !== "string" ||
+    typeof anio !== "number" ||
+    typeof color !== "string" ||
+    typeof patente !== "string" ||
+    typeof idDuenio !== "string"
+  ) {
     return null;
   }
 
   const autos = await autoRepo.findAll();
-  if (autos.some(a => a.patente === patente)) return null;
+  if (autos.some(a => a.patente === patente)) {
+    return false;
+  }
 
-  return await autoRepo.save({ ...auto, _id: 0 });
+  const autoConId: Auto = {
+    ...auto,
+    _id: randomUUID(),
+  };
+
+  return await autoRepo.save(autoConId);
 };
 
-
-const editA = async (id: number, cambios: Partial<Auto>): Promise<boolean> => {
-    const auto = await autoRepo.findById(id);
+const editA = async (id: string, cambios: Partial<Auto>): Promise<boolean> => {
+  const auto = await autoRepo.findById(id);
   if (!auto) return false;
 
-  auto.marca = cambios.marca ?? auto.marca;
-  auto.modelo = cambios.modelo ?? auto.modelo;
-  auto.anio = cambios.anio ?? auto.anio;
-  auto.color = cambios.color ?? auto.color;
-  auto.patente = cambios.patente ?? auto.patente;
-  auto.idDuenio = cambios.idDuenio ?? auto.idDuenio;
-  return await autoRepo.update(id, cambios);
+  const autoActualizado = {
+    ...auto,
+    marca: cambios.marca ?? auto.marca,
+    modelo: cambios.modelo ?? auto.modelo,
+    anio: cambios.anio ?? auto.anio,
+    color: cambios.color ?? auto.color,
+    patente: cambios.patente ?? auto.patente,
+    idDuenio: cambios.idDuenio ?? auto.idDuenio,
+  };
+
+  return await autoRepo.update(id, autoActualizado);
 };
 
-const deleteA = async (id: number): Promise<boolean> => {
+const deleteA = async (id: string): Promise<boolean> => {
   return await autoRepo.delete(id);
 };
 

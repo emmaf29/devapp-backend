@@ -1,6 +1,6 @@
 interface Auto {
-    _id: number;
-    idDuenio: number;
+    _id: string;
+    idDuenio: string;
     marca: string;
     modelo: string;
     anio: number;

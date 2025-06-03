@@ -3,6 +3,8 @@ import db from "../../coneccion/Firebase";
 import Auto from "../../modelo/auto";
 import IRepository from "../IRepository";
 import Persona from "../../modelo/persona";
+import { randomUUID } from "crypto";
+
 
 export class FirebaseAutoRepository implements IRepository<Auto>{
   private coleccion = collection(db, "personas");
@@ -13,18 +15,15 @@ export class FirebaseAutoRepository implements IRepository<Auto>{
    return personas.flatMap(p => p.autos || []);
   }
 
-  async findById(id: number): Promise<Auto | undefined> {
+  async findById(id: string): Promise<Auto | null> {
   const autos =  await this.findAll();
-  return autos.find(a => a._id === id);
+  return autos.find(a => a._id === id) || null;
   }
 
-  private generarNuevoId = async (): Promise<number> => {
-  const autos = await this.findAll();
-  return autos.length ? Math.max(...autos.map(a => a._id ?? 0)) + 1 : 1;
-  };
 
-async save(auto: Auto): Promise<Auto> {
-    const personaRef = doc(this.coleccion, auto.idDuenio.toString());
+
+  async save(auto: Auto): Promise<Auto> {
+    const personaRef = doc(this.coleccion, auto.idDuenio);
     const personaSnap = await getDoc(personaRef);
 
     if (!personaSnap.exists()) throw new Error("Persona no encontrada");
@@ -32,7 +31,7 @@ async save(auto: Auto): Promise<Auto> {
     const persona = personaSnap.data() as Persona;
     const autos = persona.autos || [];
 
-    auto._id = await this.generarNuevoId();
+    auto._id = randomUUID();
     autos.push(auto);
 
     await updateDoc(personaRef, { autos });
@@ -40,7 +39,7 @@ async save(auto: Auto): Promise<Auto> {
   }
 
 
-  async update(id: number, cambios: Partial<Auto>): Promise<boolean> {
+  async update(id: string, cambios: Partial<Auto>): Promise<boolean> {
    const personasSnap = await getDocs(this.coleccion);
   for (const doc of personasSnap.docs){
     const persona = doc.data() as Persona;
@@ -57,7 +56,7 @@ async save(auto: Auto): Promise<Auto> {
   }
 
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
    const personasSnap = await getDocs(this.coleccion);
    for(const doc of personasSnap.docs){
     const persona = doc.data() as Persona;

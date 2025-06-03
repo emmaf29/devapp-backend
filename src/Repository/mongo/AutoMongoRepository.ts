@@ -1,6 +1,7 @@
 import connectToMongo from "../../coneccion/mongo"
 import Auto from "../../modelo/auto";
 import IRepository from "../IRepository";
+import { randomUUID } from 'crypto';
 
 export class MongoAutoRepository implements IRepository<Auto> {
   private async collection() {
@@ -14,38 +15,31 @@ export class MongoAutoRepository implements IRepository<Auto> {
     return personas.flatMap((p: any) => p.autos || []);
   }
 
-  async findById(id: number): Promise<Auto | undefined> {
-    const autos = await this.findAll();
-    return autos.find(a => a._id === id);
-  }
+async findById(id: string): Promise<Auto | null> {
+  const autos = await this.findAll();
+  return autos.find(a => a._id === id) || null;
+}
 
-  private generarNuevoId(autos: Auto[]): number {
-    return autos.length ? Math.max(...autos.map(a => a._id ?? 0)) + 1 : 1;
-  }
-
-  private async actualizarPersona(personaId: number, autos: Auto[]) {
+   private async actualizarPersona(id: string, autos: Auto[]) {
     const coleccion = await this.collection();
-    await coleccion.updateOne({ id: personaId }, { $set: { autos } });
+    await coleccion.updateOne({ id }, { $set: { autos } });
   }
 
-  async save(auto: Auto): Promise<Auto> {
-  if (auto._id) throw new Error("El auto ya existe, para modificar usa update.");
 
+async save(auto: Auto): Promise<Auto> {
   const coleccion = await this.collection();
   const persona = await coleccion.findOne({ id: auto.idDuenio });
 
   if (!persona) throw new Error("Persona no encontrada");
 
   const autos = persona.autos || [];
-  auto._id = this.generarNuevoId(await this.findAll());
-
   autos.push(auto);
 
   await this.actualizarPersona(auto.idDuenio, autos);
   return auto;
 }
 
-async update(id: number, autoActualizado: Partial<Auto>): Promise<boolean> {
+async update(id: string, autoActualizado: Partial<Auto>): Promise<boolean> {
   const coleccion = await this.collection();
 
   const persona = await coleccion.findOne({ "autos._id": id });
@@ -65,7 +59,7 @@ async update(id: number, autoActualizado: Partial<Auto>): Promise<boolean> {
   return true;
 }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     const coleccion = await this.collection();
     const persona = await coleccion.findOne({ "autos._id": id });
 

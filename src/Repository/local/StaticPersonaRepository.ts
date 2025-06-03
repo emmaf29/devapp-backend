@@ -2,7 +2,7 @@ import Persona from "../../modelo/persona";
 import IRepository from "../IRepository";
 import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from './listaAutos';
 import personas from "./listaPersonas";
-
+import { randomUUID } from 'crypto';
 
 let personaIdCounter = 100;
 
@@ -11,25 +11,25 @@ const StaticPersonaRepository: IRepository<Persona> = {
     return personas;
   },
 
-  async findById(id: number): Promise<Persona | undefined> {
-    return personas.find(p => p.id === id);
-  },
+async findById(id: string): Promise<Persona | null> {
+  return personas.find(p => p.id === id) || null;
+},
 
   async save(persona: Persona): Promise<Persona> {
-    persona.id = personaIdCounter++;
+    persona.id = randomUUID();
     personas.push(persona);
     return persona;
   },
 
-async update(id: number, personaActualizada: Persona): Promise<boolean> {
-  const index = personas.findIndex(p => p.id === id);
-  if (index === -1) return false;
+  async update(id: string, personaActualizada: Persona): Promise<boolean> {
+    const index = personas.findIndex(p => p.id === id);
+    if (index === -1) return false;
 
-  personas[index] = personaActualizada;
-  return true;
-},
+    personas[index] = personaActualizada;
+    return true;
+  },
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     const index = personas.findIndex(p => p.id === id);
     if (index === -1) return false;
     personas.splice(index, 1);

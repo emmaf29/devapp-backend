@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import connectToMongo from "../../coneccion/mongo";
 import Persona from "../../modelo/persona";
 import IRepository from "../IRepository";
@@ -13,33 +14,29 @@ export class MongoPersonaRepository implements IRepository<Persona> {
     return await coleccion.find().toArray();
   }
 
-  async findById(id: number): Promise<Persona | undefined> {
-    const coleccion = await this.collection();
-    return await coleccion.findOne({ id }) ?? undefined;
-  }
+async findById(id: string): Promise<Persona | null> {
+  const coleccion = await this.collection();
+  return await coleccion.findOne({ id }) || null;
+}
 
-    async save(persona: Persona): Promise<Persona> {
+  async save(persona: Persona): Promise<Persona> {
     const coleccion = await this.collection();
-
 
     if (!persona.id) {
-      const personas = await coleccion.find().toArray();
-      const maxId = personas.length ? Math.max(...personas.map(p => p.id ?? 0)) : 0;
-      persona.id = maxId + 1;
+      persona.id = randomUUID();
     }
 
     await coleccion.insertOne(persona);
     return persona;
-
   }
 
-async update(id: number, actualizada: Persona): Promise<boolean> {
-  const coleccion = await this.collection();
-  const resultado = await coleccion.replaceOne({ id }, actualizada);
-  return resultado.modifiedCount === 1;
-}
+  async update(id: string, actualizada: Persona): Promise<boolean> {
+    const coleccion = await this.collection();
+    const resultado = await coleccion.replaceOne({ id }, actualizada);
+    return resultado.modifiedCount === 1;
+  }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     const coleccion = await this.collection();
     const resultado = await coleccion.deleteOne({ id });
     return resultado.deletedCount === 1;

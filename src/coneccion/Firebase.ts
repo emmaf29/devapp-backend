@@ -17,3 +17,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default db;
+
+
+
+//REPOSITORY=firebase
+//FIREBASE_API_KEY=AIzaSyCiV8Bjs6rifOwC2P_cpDb7jbIeI0sicRY
