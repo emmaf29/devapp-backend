@@ -23,7 +23,7 @@ export class FirebaseAutoRepository implements IRepository<Auto>{
 
 
   async save(auto: Auto): Promise<Auto> {
-    const personaRef = doc(this.coleccion, auto.idDuenio);
+    const personaRef = doc(this.coleccion, auto._idDuenio);
     const personaSnap = await getDoc(personaRef);
 
     if (!personaSnap.exists()) throw new Error("Persona no encontrada");

@@ -1,7 +1,7 @@
 import Auto from './auto';
 
 interface Persona {
-    id: string;
+    _id: string;
     nombre: string;
     apellido: string;
     dni: string;

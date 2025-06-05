@@ -16,14 +16,14 @@ export class MongoPersonaRepository implements IRepository<Persona> {
 
 async findById(id: string): Promise<Persona | null> {
   const coleccion = await this.collection();
-  return await coleccion.findOne({ id }) || null;
+  return await coleccion.findOne({ _id: id }) || null;
 }
 
   async save(persona: Persona): Promise<Persona> {
     const coleccion = await this.collection();
 
-    if (!persona.id) {
-      persona.id = randomUUID();
+    if (!persona._id) {
+      persona._id = randomUUID();
     }
 
     await coleccion.insertOne(persona);
@@ -32,13 +32,13 @@ async findById(id: string): Promise<Persona | null> {
 
   async update(id: string, actualizada: Persona): Promise<boolean> {
     const coleccion = await this.collection();
-    const resultado = await coleccion.replaceOne({ id }, actualizada);
+    const resultado = await coleccion.replaceOne({ _id: id }, actualizada);
     return resultado.modifiedCount === 1;
   }
 
   async delete(id: string): Promise<boolean> {
     const coleccion = await this.collection();
-    const resultado = await coleccion.deleteOne({ id });
+    const resultado = await coleccion.deleteOne({_id: id });
     return resultado.deletedCount === 1;
   }
 }

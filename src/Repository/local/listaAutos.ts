@@ -2,7 +2,7 @@ import Auto from "../../modelo/auto";
 
 const Ferrari: Auto = {
   _id: "uuid-auto-1",
-  idDuenio: "uuid-ana",
+  _idDuenio: "uuid-ana",
   anio: 2003,
   color: "Blanco",
   marca: "Ferrari",
@@ -14,7 +14,7 @@ const Ferrari: Auto = {
 
 const ToyotaCorolla: Auto = {
   _id: "uuid-auto-2",
-  idDuenio: "uuid-carlos",
+  _idDuenio: "uuid-carlos",
   anio: 2020,
   color: "Gris",
   marca: "Toyota",
@@ -26,7 +26,7 @@ const ToyotaCorolla: Auto = {
 
 const FordFiesta: Auto = {
   _id: "uuid-auto-3",
-  idDuenio: "uuid-carlos",
+  _idDuenio: "uuid-carlos",
   anio: 2019,
   color: "Rojo",
   marca: "Ford",
@@ -38,7 +38,7 @@ const FordFiesta: Auto = {
 
 const ChevroletCruze: Auto = {
   _id: "uuid-auto-4",
-  idDuenio: "uuid-lucia",
+  _idDuenio: "uuid-lucia",
   anio: 2022,
   color: "Negro",
   marca: "Chevrolet",
@@ -50,7 +50,7 @@ const ChevroletCruze: Auto = {
 
 const BMWX5: Auto = {
   _id: "uuid-auto-5",
-  idDuenio: "uuid-mariana",
+  _idDuenio: "uuid-mariana",
   anio: 2023,
   color: "Azul",
   marca: "BMW",

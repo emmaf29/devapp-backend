@@ -9,12 +9,12 @@ const autoRepo = RepositoryFactory.autoRepository();
 const listarA = async (): Promise<Partial<Auto>[]> => {
   const autos = await autoRepo.findAll();
   return autos.map(a => ({
-    id: a._id,
+    _id: a._id,
     marca: a.marca,
     modelo: a.modelo,
     anio: a.anio,
     patente: a.patente,
-    idDuenio: a.idDuenio
+    _idDuenio: a._idDuenio
   }));
 };
 
@@ -22,7 +22,7 @@ const buscarPorId = async (id: string): Promise<Auto | null> => {
   return await autoRepo.findById(id) || null;
 };
 const agregarA = async (auto: Omit<Auto, "_id">): Promise<Auto | false | null> => {
-  const { marca, modelo, anio, color, patente, idDuenio } = auto;
+  const { marca, modelo, anio, color, patente, _idDuenio } = auto;
 
   if (
     typeof marca !== "string" ||
@@ -30,7 +30,7 @@ const agregarA = async (auto: Omit<Auto, "_id">): Promise<Auto | false | null> =
     typeof anio !== "number" ||
     typeof color !== "string" ||
     typeof patente !== "string" ||
-    typeof idDuenio !== "string"
+    typeof _idDuenio !== "string"
   ) {
     return null;
   }
@@ -42,6 +42,7 @@ const agregarA = async (auto: Omit<Auto, "_id">): Promise<Auto | false | null> =
 
   const autoConId: Auto = {
     ...auto,
+     _idDuenio,
     _id: randomUUID(),
   };
 
@@ -59,7 +60,7 @@ const editA = async (id: string, cambios: Partial<Auto>): Promise<boolean> => {
     anio: cambios.anio ?? auto.anio,
     color: cambios.color ?? auto.color,
     patente: cambios.patente ?? auto.patente,
-    idDuenio: cambios.idDuenio ?? auto.idDuenio,
+   _idDuenio: cambios._idDuenio ?? auto._idDuenio,
   };
 
   return await autoRepo.update(id, autoActualizado);

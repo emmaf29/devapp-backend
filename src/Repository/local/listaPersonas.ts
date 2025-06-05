@@ -3,7 +3,7 @@ import { Ferrari, ToyotaCorolla, FordFiesta, ChevroletCruze, BMWX5 } from './lis
 
 const personas: Persona[] = [
   {
-    id: "uuid-ana",
+    _id: "uuid-ana",
     nombre: "Ana",
     apellido: "Díaz",
     dni: "23564897",
@@ -13,7 +13,7 @@ const personas: Persona[] = [
     esDonante: true
   },
   {
-    id: "uuid-carlos",
+    _id: "uuid-carlos",
     nombre: "Carlos",
     apellido: "Gómez",
     dni: "30567890",
@@ -23,7 +23,7 @@ const personas: Persona[] = [
     esDonante: false
   },
   {
-    id: "uuid-lucia",
+    _id: "uuid-lucia",
     nombre: "Lucía",
     apellido: "Fernández",
     dni: "28956734",
@@ -33,7 +33,7 @@ const personas: Persona[] = [
     esDonante: true
   },
   {
-    id: "uuid-pedro",
+    _id: "uuid-pedro",
     nombre: "Pedro",
     apellido: "Martínez",
     dni: "31876543",
@@ -43,7 +43,7 @@ const personas: Persona[] = [
     esDonante: false
   },
   {
-    id: "uuid-mariana",
+    _id: "uuid-mariana",
     nombre: "Mariana",
     apellido: "Suárez",
     dni: "32765432",

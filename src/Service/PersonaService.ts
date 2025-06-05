@@ -8,7 +8,7 @@ const personaRepo = RepositoryFactory.personaRepository();
 const listarP = async () => {
   const personas = await personaRepo.findAll();
   return personas.map(p => ({
-    id: p.id,
+    _id: p._id,
     dni: p.dni,
     nombre: p.nombre,
     apellido: p.apellido,
@@ -19,7 +19,7 @@ const buscarid = async (id: string): Promise<Persona | null> => {
   return await personaRepo.findById(id);
 };
 
-const addP = async (persona: Omit<Persona, "id">): Promise<string | null> => {
+const addP = async (persona: Omit<Persona, "_id">): Promise<string | null> => {
   const { nombre, apellido, dni, fechaDeNacimiento, genero, autos, esDonante } = persona;
 
   if (
@@ -35,7 +35,7 @@ const addP = async (persona: Omit<Persona, "id">): Promise<string | null> => {
   }
 
   const nuevaPersona: Persona = {
-    id: randomUUID(),
+    _id: randomUUID(),
     nombre,
     apellido,
     dni,
@@ -46,7 +46,7 @@ const addP = async (persona: Omit<Persona, "id">): Promise<string | null> => {
   };
 
   const guardada = await personaRepo.save(nuevaPersona);
-  return guardada.id;
+  return guardada._id;
 };
 
 const editP = async (id: string, cambios: Partial<Persona>): Promise<boolean | null> => {

@@ -23,10 +23,10 @@ export class FirebasePersonaRepository implements IRepository<Persona> {
   }
 
   async save(persona: Persona): Promise<Persona> {
-    if (!persona.id) {
-      persona.id = randomUUID();
+    if (!persona._id) {
+      persona._id = randomUUID();
     }
-    const ref = doc(this.coleccion, persona.id);
+    const ref = doc(this.coleccion, persona._id);
     await setDoc(ref, persona);
     return persona;
   }

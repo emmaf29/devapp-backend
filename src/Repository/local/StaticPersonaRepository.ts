@@ -12,17 +12,17 @@ const StaticPersonaRepository: IRepository<Persona> = {
   },
 
 async findById(id: string): Promise<Persona | null> {
-  return personas.find(p => p.id === id) || null;
+  return personas.find(p => p._id === id) || null;
 },
 
   async save(persona: Persona): Promise<Persona> {
-    persona.id = randomUUID();
+    persona._id = randomUUID();
     personas.push(persona);
     return persona;
   },
 
   async update(id: string, personaActualizada: Persona): Promise<boolean> {
-    const index = personas.findIndex(p => p.id === id);
+    const index = personas.findIndex(p => p._id === id);
     if (index === -1) return false;
 
     personas[index] = personaActualizada;
@@ -30,7 +30,7 @@ async findById(id: string): Promise<Persona | null> {
   },
 
   async delete(id: string): Promise<boolean> {
-    const index = personas.findIndex(p => p.id === id);
+    const index = personas.findIndex(p => p._id === id);
     if (index === -1) return false;
     personas.splice(index, 1);
     return true;
