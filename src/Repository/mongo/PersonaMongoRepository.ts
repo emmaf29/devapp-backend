@@ -38,7 +38,7 @@ async findById(id: string): Promise<Persona | null> {
 
   async delete(id: string): Promise<boolean> {
     const coleccion = await this.collection();
-    const resultado = await coleccion.deleteOne({_id: id });
+    const resultado = await coleccion.deleteOne({ _id: id});
     return resultado.deletedCount === 1;
   }
 }
